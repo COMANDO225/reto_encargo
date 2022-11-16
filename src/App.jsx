@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Card from "./components/Card";
 import logo from "./assets/img/logo.png";
+import logoApple from "./assets/img/logoApple.png";
+import logoGoogle from "./assets/img/logoGoogle.png";
 
 const App = () => {
 	const [data, setData] = useState([]);
@@ -11,6 +13,7 @@ const App = () => {
 		desde: 0,
 		hasta: 10,
 	});
+	const [paginaActual, setPaginaActual] = useState(1);
 	const cadaPagina = 10;
 
 	const baseURL =
@@ -40,7 +43,14 @@ const App = () => {
 			desde: numero * cadaPagina - cadaPagina,
 			hasta: numero * cadaPagina,
 		});
+		setPaginaActual(numero);
 	};
+
+	const pages = [
+		{ id: 1, numero: 1 },
+		{ id: 2, numero: 2 },
+		{ id: 3, numero: 3 },
+	];
 
 	return (
 		<div
@@ -143,22 +153,32 @@ const App = () => {
 			</div>
 
 			{!buscarPelicula && (
-				<div
-					style={{
-						width: "100%",
-						maxWidth: 1280,
-						margin: "0 auto",
-						display: "flex",
-						justifyContent: "center",
-						padding: "1rem",
-						gap: ".75rem",
-					}}
-				>
-					<button onClick={() => handlePaginacion(1)}>1</button>
-					<button onClick={() => handlePaginacion(2)}>2</button>
-					<button onClick={() => handlePaginacion(3)}>3</button>
+				<div className='paginacion'>
+					{pages.map((page) => (
+						<button
+							key={page.id}
+							onClick={() => handlePaginacion(page.numero)}
+							className='btnCustom'
+							style={{
+								opacity: paginaActual !== page.numero && 0.5,
+							}}
+						>
+							{page.numero}
+						</button>
+					))}
 				</div>
 			)}
+			<footer className='footer'>
+				<img src={logo} height='40' alt='' />
+				<div className='logos'>
+					<img src={logoApple} height='40' alt='' />
+					<img src={logoGoogle} height='40' alt='' />
+				</div>
+				<p className='textfoot'>
+					© 2022 Todos los derechos reservados. Desarrollado por
+					Rodrigo Valer
+				</p>
+			</footer>
 		</div>
 	);
 };
